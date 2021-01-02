@@ -29,20 +29,23 @@ MainWindow::MainWindow(QWidget *parent)
       QString msg = ui->inputLineEdit->text();
       if(tcpip->getMode() == Mode::SERVER){
           if(ui->CRCheck->isChecked()) tcpip->send(Mode::SERVER,msg+CR);
-          if(ui->LFCheck->isChecked()) tcpip->send(Mode::SERVER,msg+LF);
-          if(ui->LFCheck->isChecked()&&ui->CRCheck->isChecked()) tcpip->send(Mode::SERVER,msg+CRLF);
+          else if(ui->LFCheck->isChecked()) tcpip->send(Mode::SERVER,msg+LF);
+          else if(ui->LFCheck->isChecked()&&ui->CRCheck->isChecked()) tcpip->send(Mode::SERVER,msg+CRLF);
+          else tcpip->send(Mode::SERVER,msg);
         }
       if(tcpip->getMode() == Mode::CLIENT){
           if(ui->CRCheck->isChecked()) tcpip->send(Mode::CLIENT,msg+CR);
-          if(ui->LFCheck->isChecked()) tcpip->send(Mode::CLIENT,msg+LF);
-          if(ui->LFCheck->isChecked()&&ui->CRCheck->isChecked()) tcpip->send(Mode::CLIENT,msg+CRLF);
+          else if(ui->LFCheck->isChecked()) tcpip->send(Mode::CLIENT,msg+LF);
+          else if(ui->LFCheck->isChecked()&&ui->CRCheck->isChecked()) tcpip->send(Mode::CLIENT,msg+CRLF);
+          else tcpip->send(Mode::CLIENT,msg);
         }
 
         //Serial
       if (serial->openFlag == true) {
           if (ui->CRCheck->isChecked()) serial->send((msg + CR).toUtf8());
-          if (ui->LFCheck->isChecked()) serial->send((msg + LF).toUtf8());
-          if (ui->LFCheck->isChecked() && ui->CRCheck->isChecked()) serial->send((msg + CRLF).toUtf8());
+          else if (ui->LFCheck->isChecked()) serial->send((msg + LF).toUtf8());
+          else if (ui->LFCheck->isChecked() && ui->CRCheck->isChecked()) serial->send((msg + CRLF).toUtf8());
+          else serial->send(msg.toUtf8());
       }
 
       ui->inputLineEdit->clear();
