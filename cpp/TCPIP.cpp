@@ -10,7 +10,16 @@ TCPIP::TCPIP(QWidget* parent) :QWidget(parent)
 	ui->localIpLabel->setText(ipAddr.ipaddr);
 
 	//server
-	connect(ui->createButton, &QAbstractButton::clicked, this, &TCPIP::setServerData);
+    ui->createButton->setEnabled(false);
+    connect(ui->serverPortLineEdit,&QLineEdit::textChanged,[this](const QString& msg){
+        Q_UNUSED(msg)
+       if(!ui->serverPortLineEdit->text().isEmpty()){
+        ui->createButton->setEnabled(true);
+       }else{
+        ui->createButton->setEnabled(false);
+       }
+    });
+    connect(ui->createButton, &QAbstractButton::clicked, this, &TCPIP::setServerData);
 	connect(ui->serverStopButton, &QAbstractButton::clicked, [this] {
 		ui->tabClient->setEnabled(true);
 		ui->createButton->setEnabled(true);
@@ -18,6 +27,15 @@ TCPIP::TCPIP(QWidget* parent) :QWidget(parent)
 		});
 
 	//client
+    ui->connectButton->setEnabled(false);
+    connect(ui->ipLineEdit,&QLineEdit::textChanged,[this](const QString& msg){
+        Q_UNUSED(msg)
+       if(!ui->ipLineEdit->text().isEmpty()){
+        ui->connectButton->setEnabled(true);
+       }else{
+        ui->connectButton->setEnabled(false);
+       }
+    });
 	connect(ui->connectButton, &QAbstractButton::clicked, this, &TCPIP::setClientData);
 	connect(ui->clientStopButton, &QAbstractButton::clicked, [this] {
 		ui->tabServer->setEnabled(true);
