@@ -4,7 +4,7 @@
 #include <QMainWindow>
 
 #include "TCPIP.h"
-#include "serial/Serial.h"
+#include "serial/serial.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }

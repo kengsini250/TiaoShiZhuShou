@@ -27,7 +27,7 @@ void Server::incomingConnection(qintptr socketID)
       msg = currentClient->readAll();
       emit Text(msg);
     });
-  connect(currentClient,&QTcpSocket::disconnected,[this,&socketID]{
+  connect(currentClient,&QTcpSocket::disconnected,[this,socketID]{
       QString str = QString::number(socketID)+ " disconnect\n";
       emit Text(str);
     });
