@@ -14,8 +14,9 @@ Serial::Serial(QWidget* parent):QWidget(parent)
 	ui->setupUi(this);
 
     auto allPort = QSerialPortInfo::availablePorts();
-    for(auto p=allPort.begin();p!=allPort.end();p++)
+    for(auto p=allPort.begin();p!=allPort.end();p++){
         ui->portComboBox->addItem((*p).portName());
+    }
 
 	connect(ui->serialstartPushButton, &QAbstractButton::clicked, this, &Serial::setData);
 	connect(ui->serialstopPushButton, &QAbstractButton::clicked, [&] {
