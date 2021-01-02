@@ -1,15 +1,21 @@
 #include "../../head/serial/serial.h"
 #include "ui_serial.h"
 
-//#define DEBUG
+#define DEBUG
 #ifdef DEBUG
 #include <QDebug>
 #endif // DEBUG
+
+#define WAITTIME 100
 
 Serial::Serial(QWidget* parent):QWidget(parent)
 , ui(new Ui::Serial)
 {
 	ui->setupUi(this);
+
+    auto allPort = QSerialPortInfo::availablePorts();
+    for(auto p=allPort.begin();p!=allPort.end();p++)
+        ui->portComboBox->addItem((*p).portName());
 
 	connect(ui->serialstartPushButton, &QAbstractButton::clicked, this, &Serial::setData);
 	connect(ui->serialstopPushButton, &QAbstractButton::clicked, [&] {
@@ -44,15 +50,18 @@ void Serial::createSerial()
 
 void Serial::getData()
 {
-	while (serialPort.waitForReadyRead(WAITTIME))
+    while (serialPort.waitForReadyRead(WAITTIME))
 	{
 		data += serialPort.readAll();
 	}
-	sendData(data);
+    sendData(data);
+    data.clear();
 }
 
 void Serial::setData()
 {
+    serialPort.setPortName(ui->portComboBox->currentText());
+
 	int speed = ui->speedComboBox->currentText().toInt();
 	serialPort.setBaudRate(speed);
 
@@ -71,8 +80,5 @@ void Serial::setData()
 	if ("1"   == stopbits) serialPort.setStopBits(QSerialPort::OneStop);
 	if ("1.5" == stopbits) serialPort.setStopBits(QSerialPort::OneAndHalfStop);
 	if ("2"   == stopbits) serialPort.setStopBits(QSerialPort::TwoStop);
-#ifdef DEBUG
-	qDebug() << speed << " " << databits << "  " << parity << "  " << stopbits;
-#endif
 	createSerial();
 }

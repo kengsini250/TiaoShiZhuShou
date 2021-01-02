@@ -3,9 +3,9 @@
 
 #include <QWidget>
 #include <QSerialPort>
+#include <QSerialPortInfo>
 #include <QByteArray>
 
-#define WAITTIME 10
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class Serial; }
@@ -22,6 +22,7 @@ private:
 	Ui::Serial* ui;
 
 	QSerialPort serialPort;
+    QSerialPortInfo info;
 	QByteArray data;
 
 	void createSerial();

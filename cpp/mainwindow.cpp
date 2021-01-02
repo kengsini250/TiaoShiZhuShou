@@ -19,10 +19,14 @@ MainWindow::MainWindow(QWidget *parent)
   connect(ui->clearPushButton, &QAbstractButton::clicked, [this] {ui->outputTextBrowser->clear(); });
   connect(ui->actionExit, &QAction::triggered, this, &QMainWindow::close);
 
-  //tcpip
+  //tcpip output
   connect(tcpip, &TCPIP::sendData, [this] (const QString& msg){
       ui->outputTextBrowser->append(msg);
       });
+  //serial output
+  connect(serial,&Serial::sendData,[this](const QString& msg){
+      ui->outputTextBrowser->append(msg);
+  });
 
   connect(ui->sendPushButton,&QAbstractButton::clicked,[this]{
       //Tcp IP
