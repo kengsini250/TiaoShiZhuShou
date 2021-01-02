@@ -17,7 +17,7 @@
    <item>
     <widget class="QGroupBox" name="serialBox">
      <property name="title">
-      <string>Serial</string>
+      <string/>
      </property>
      <widget class="QLabel" name="label_2">
       <property name="geometry">
